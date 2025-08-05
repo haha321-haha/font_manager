@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "matplotlib-font-manager-yanlin"
+version = "1.0.0"
+description = "一键解决matplotlib中文字体显示问题的智能字体管理库"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "yanlin-haha", email = "yanlin.haha@example.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+keywords = ["matplotlib", "font", "chinese", "visualization", "中文字体", "数据可视化"]
+requires-python = ">=3.7"
+dependencies = [
+    "matplotlib>=3.5.0",
+    "numpy>=1.20.0",
+    "PyYAML>=6.0",
+    "psutil>=5.8.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "flake8",
+    "black",
+    "isort"
+]
+
+[project.urls]
+Homepage = "https://github.com/haha321-haha/font_manager"
+Repository = "https://github.com/haha321-haha/font_manager"
+Issues = "https://github.com/haha321-haha/font_manager/issues"
+Documentation = "https://github.com/haha321-haha/font_manager#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["font_manager*"]
+
+[tool.setuptools.package-data]
+font_manager = ["data/*.json"]

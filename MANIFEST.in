@@ -2,8 +2,12 @@ include README.md
 include LICENSE
 include requirements.txt
 include CHANGELOG.md
+include pyproject.toml
+recursive-include font_manager *.py
 recursive-include font_manager/data *.json
 recursive-include examples *.py
 recursive-include tests *.py
+recursive-include docs *.md
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store

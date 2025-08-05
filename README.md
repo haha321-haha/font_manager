@@ -29,10 +29,13 @@ Font Manager是一个专为Python数据可视化设计的智能字体管理库�
 ### 安装
 
 ```bash
-# 方式1：从GitHub直接安装（推荐）
+# 方式1：从PyPI安装（推荐，发布后可用）
+pip install matplotlib-font-manager-yanlin
+
+# 方式2：从GitHub直接安装
 pip install git+https://github.com/haha321-haha/font_manager.git
 
-# 方式2：克隆后安装
+# 方式3：克隆后安装
 git clone https://github.com/haha321-haha/font_manager.git
 cd font_manager
 pip install -e .
