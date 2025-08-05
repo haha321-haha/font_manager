@@ -2,8 +2,8 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PyPI version](https://badge.fury.io/py/matplotlib-font-manager.svg)](https://badge.fury.io/py/matplotlib-font-manager)
-[![Downloads](https://pepy.tech/badge/matplotlib-font-manager)](https://pepy.tech/project/matplotlib-font-manager)
+[![GitHub Stars](https://img.shields.io/github/stars/haha321-haha/font_manager.svg)](https://github.com/haha321-haha/font_manager/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/haha321-haha/font_manager.svg)](https://github.com/haha321-haha/font_manager/issues)
 
 > 🚀 **一行代码解决matplotlib中文字体显示问题！**
 
@@ -21,10 +21,21 @@ Font Manager是一个专为Python数据可视化设计的智能字体管理库�
 
 ## 🚀 快速开始
 
+### 📢 项目状态
+- ✅ **核心功能完整，生产就绪**
+- ✅ **GitHub开源，持续更新**
+- 🔄 **PyPI发布准备中**（即将支持 `pip install matplotlib-font-manager`）
+
 ### 安装
 
 ```bash
-pip install matplotlib-font-manager
+# 方式1：从GitHub直接安装（推荐）
+pip install git+https://github.com/haha321-haha/font_manager.git
+
+# 方式2：克隆后安装
+git clone https://github.com/haha321-haha/font_manager.git
+cd font_manager
+pip install -e .
 ```
 
 ### 最简单的使用方式
@@ -170,8 +181,8 @@ python comprehensive_demo.py
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/matplotlib-font-manager.git
-cd matplotlib-font-manager
+git clone https://github.com/haha321-haha/font_manager.git
+cd font_manager
 
 # 安装开发依赖
 pip install -r requirements.txt
@@ -193,8 +204,8 @@ python -m pytest
 遇到问题？请查看：
 
 1. [常见问题](docs/faq.md)
-2. [问题反馈](https://github.com/yourusername/matplotlib-font-manager/issues)
-3. [讨论区](https://github.com/yourusername/matplotlib-font-manager/discussions)
+2. [问题反馈](https://github.com/haha321-haha/font_manager/issues)
+3. [讨论区](https://github.com/haha321-haha/font_manager/discussions)
 
 ## 📄 许可证
 
@@ -211,7 +222,7 @@ python -m pytest
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/matplotlib-font-manager&type=Date)](https://star-history.com/#yourusername/matplotlib-font-manager&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=haha321-haha/font_manager&type=Date)](https://star-history.com/#haha321-haha/font_manager&Date)
 
 ---
 
@@ -219,9 +230,9 @@ python -m pytest
 
 **🎉 让Python数据可视化告别中文字体烦恼！**
 
-[⭐ 给个Star](https://github.com/yourusername/matplotlib-font-manager) • 
+[⭐ 给个Star](https://github.com/haha321-haha/font_manager) • 
 [📖 查看文档](docs/) • 
-[🐛 报告问题](https://github.com/yourusername/matplotlib-font-manager/issues) • 
-[💬 参与讨论](https://github.com/yourusername/matplotlib-font-manager/discussions)
+[🐛 报告问题](https://github.com/haha321-haha/font_manager/issues) • 
+[💬 参与讨论](https://github.com/haha321-haha/font_manager/discussions)
 
 </div>
