@@ -6,13 +6,17 @@ import os
 
 # 读取README文件
 def read_readme():
-    with open("README.md", "r", encoding="utf-8") as fh:
-        return fh.read()
+    if os.path.exists("README.md"):
+        with open("README.md", "r", encoding="utf-8") as fh:
+            return fh.read()
+    return "Font Manager - 智能字体管理库"
 
 # 读取requirements
 def read_requirements():
-    with open("requirements.txt", "r", encoding="utf-8") as fh:
-        return [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+    if os.path.exists("requirements.txt"):
+        with open("requirements.txt", "r", encoding="utf-8") as fh:
+            return [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+    return ["matplotlib>=3.5.0", "numpy>=1.20.0", "PyYAML>=6.0", "psutil>=5.8.0"]
 
 setup(
     name="matplotlib-font-manager",
