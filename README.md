@@ -49,6 +49,33 @@ pip install -e .
 ### 最简单的使用方式
 
 ```python
+# 🎯 新增方法：一行代码解决中文显示问题（推荐）
+from font_manager import setup_matplotlib_chinese
+setup_matplotlib_chinese()
+
+# 或者使用原有方法
+from font_manager import setup_chinese_font
+setup_chinese_font()
+```
+
+**就这么简单！现在你的matplotlib图表可以完美显示中文了！** 🎉
+
+### 高级用法
+
+```python
+# 指定特定字体
+from font_manager import setup_matplotlib_chinese
+setup_matplotlib_chinese("Hiragino Sans GB")
+
+# 使用类方法
+from font_manager import FontManager
+fm = FontManager()
+result = fm.setup_matplotlib_chinese()
+if result.success:
+    print(f"字体设置成功: {result.font_used.name}")
+```
+
+```python
 from font_manager import setup_chinese_font
 
 # 一行代码解决问题！
