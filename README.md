@@ -60,6 +60,41 @@ setup_chinese_font()
 
 **就这么简单！现在你的matplotlib图表可以完美显示中文了！** 🎉
 
+## ⚠️ **重要使用说明**
+
+### 🎯 **作用范围**
+- ✅ **支持库**: matplotlib, seaborn, pandas.plot()
+- ✅ **平台**: macOS (自动选择 Hiragino Sans GB), Windows, Linux
+- ❌ **不支持**: WordCloud (需要单独设置), Plotly, PIL等非matplotlib库
+
+### 🔄 **生效范围**
+- ✅ **进程内永久**: 调用一次后，当前Python进程内所有图表都能正常显示中文
+- ⚠️ **需要重新调用的情况**:
+  - 新启动的Python脚本或Jupyter内核
+  - 其他代码修改了 `plt.rcParams['font.family']` 等设置
+  - 加载了某些会重置字体的样式或主题
+
+### 💡 **最佳实践**
+```python
+# 推荐：在程序入口处调用一次
+from font_manager import setup_matplotlib_chinese
+setup_matplotlib_chinese()
+
+# 对于Jupyter Notebook，在第一个cell中调用
+# 对于长期运行的服务，在启动脚本中调用
+```
+
+### 🔧 **WordCloud特殊处理**
+```python
+# WordCloud需要单独设置字体路径
+from font_manager import FontManager
+fm = FontManager()
+result = fm.setup()
+if result.success:
+    font_path = result.font_used.path
+    wordcloud = WordCloud(font_path=font_path, ...)
+```
+
 ### 高级用法
 
 ```python
@@ -211,6 +246,76 @@ fm.reset_config()
 
 # 获取配置信息
 config_info = fm.get_config_info()
+```
+
+## ❓ **常见问题 FAQ**
+
+### Q1: 是否一次设置永久生效？
+**A**: 在同一个Python进程内永久生效，但以下情况需要重新调用：
+- 新启动的Python脚本或Jupyter内核
+- 其他代码修改了matplotlib字体设置
+- 加载了会重置字体的主题或样式
+
+### Q2: 支持哪些可视化库？
+**A**: 
+- ✅ **完全支持**: matplotlib, seaborn, pandas.plot()
+- ⚠️ **需要特殊处理**: WordCloud (需要传入font_path)
+- ❌ **不支持**: Plotly, PIL, 其他非matplotlib基础的库
+
+### Q3: 不同操作系统的字体选择？
+**A**:
+- **macOS**: 自动选择 Hiragino Sans GB (冬青黑体)
+- **Windows**: 自动选择 Microsoft YaHei 或 SimHei
+- **Linux**: 需要预装中文字体，推荐 Noto Sans CJK
+
+### Q4: WordCloud如何显示中文？
+**A**:
+```python
+from font_manager import FontManager
+from wordcloud import WordCloud
+
+fm = FontManager()
+result = fm.setup_matplotlib_chinese()
+if result.success:
+    # 获取字体路径用于WordCloud
+    font_path = result.font_used.path
+    wordcloud = WordCloud(font_path=font_path, ...).generate(text)
+```
+
+### Q5: Jupyter Notebook中如何使用？
+**A**:
+```python
+# 在第一个cell中运行一次即可
+from font_manager import setup_matplotlib_chinese
+setup_matplotlib_chinese()
+
+# 后续所有cell的图表都能正常显示中文
+```
+
+### Q6: 服务器/CI环境如何使用？
+**A**:
+```bash
+# 1. 安装中文字体 (Ubuntu/Debian)
+sudo apt-get install fonts-noto-cjk
+
+# 2. 在启动脚本中调用
+python -c "from font_manager import setup_matplotlib_chinese; setup_matplotlib_chinese()"
+```
+
+### Q7: 如何验证是否设置成功？
+**A**:
+```python
+from font_manager import setup_matplotlib_chinese
+import matplotlib.pyplot as plt
+
+result = setup_matplotlib_chinese()
+print(f"设置状态: {'成功' if result.success else '失败'}")
+print(f"使用字体: {result.font_used.name}")
+
+# 测试图表
+plt.figure()
+plt.title('中文测试')
+plt.show()
 ```
 
 ## 📋 API文档

@@ -42,6 +42,12 @@ result = fm.setup_matplotlib_chinese()
 - 提供了更简单易用的API接口
 - 完全向后兼容，不影响现有代码
 
+#### ⚠️ 重要使用说明
+- **生效范围**: 进程内永久生效，新进程需要重新调用
+- **支持库**: matplotlib, seaborn, pandas.plot()
+- **特殊处理**: WordCloud需要单独设置font_path
+- **最佳实践**: 在程序入口或Jupyter第一个cell中调用一次
+
 ---
 
 ## [1.0.0] - 2025-01-04
