@@ -1,5 +1,64 @@
 # 更新日志
 
+## [1.1.0] - 2025-08-08
+
+### 🎉 重大新功能：Emoji 后备字体支持
+
+#### ✨ 新增功能
+- **🆕 Emoji 后备字体**: 支持在中文图表中正确显示 emoji 字符
+- **🎨 颜色偏好控制**: 支持彩色和黑白 emoji 字体偏好设置
+- **🌍 环境变量支持**: 通过 `FM_EMOJI_FALLBACK` 和 `FM_EMOJI_COLOR` 控制
+- **🔧 配置持久化**: emoji 设置可保存到配置文件
+- **📊 跨平台检测**: 自动检测 macOS、Linux、Windows 的 emoji 字体
+
+#### 🚀 API 增强
+```python
+# 启用 emoji 后备字体
+from font_manager import setup_matplotlib_chinese
+
+# 黑白 emoji（Agg 后端推荐）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=False)
+
+# 彩色 emoji（需要 mplcairo）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=True)
+
+# 环境变量控制
+# export FM_EMOJI_FALLBACK=true
+# export FM_EMOJI_COLOR=false
+```
+
+#### 🎯 字体检测增强
+- **Apple Color Emoji**: macOS 彩色 emoji 字体
+- **Noto Emoji**: 跨平台黑白 emoji 字体（推荐安装）
+- **Segoe UI Emoji**: Windows emoji 字体
+- **智能排序**: 根据颜色偏好自动排序字体优先级
+
+#### 📝 使用示例
+```python
+import matplotlib.pyplot as plt
+from font_manager import setup_matplotlib_chinese
+
+# 一行初始化：中文 + emoji 支持
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=False)
+
+# 现在可以在图表中使用 emoji
+plt.title('销售数据 📊 - 业绩增长 🚀')
+plt.xlabel('月份')
+plt.ylabel('销售额 💰')
+```
+
+#### ⚠️ 重要说明
+- **默认关闭**: emoji 后备字体默认关闭，保持向后兼容
+- **Agg 后端**: 推荐使用黑白 emoji (`emoji_prefer_color=False`)
+- **彩色渲染**: 需要安装 `mplcairo` 并切换后端
+- **字体安装**: 建议安装 `font-noto-emoji` 获得最佳效果
+
+#### 🔧 技术改进
+- **FontInfo 模型增强**: 添加 `is_emoji`、`is_color_emoji`、`priority` 字段
+- **FontSetupResult 扩展**: 添加 `emoji_fonts`、`emoji_color_available`、`mplcairo_detected` 字段
+- **配置系统扩展**: 支持 emoji 相关配置项和环境变量覆盖
+- **日志增强**: 详细记录 emoji 字体检测和注册过程
+
 ## [1.0.1] - 2025-08-08
 
 ### 🔧 重要修复
@@ -115,3 +174,14 @@ result = fm.setup_matplotlib_chinese()
 ---
 
 *更多详细信息请查看 [GitHub Releases](https://github.com/yourusername/matplotlib-font-manager/releases)*
+
+## 1.1.0
+- feat: 新增可选的 `emoji_fallback` 能力，支持在 Matplotlib 中文图表中追加 emoji 后备字体
+  - 新增配置项：`emoji_fallback`（默认 false）、`emoji_prefer_color`（默认 true）
+  - 支持环境变量覆盖：`FM_EMOJI_FALLBACK`、`FM_EMOJI_COLOR`
+  - 主入口 `setup_matplotlib_chinese(emoji_fallback=False, emoji_prefer_color=True)`
+  - 自动检测平台字体：macOS(Apple Color Emoji)、Linux(Noto Color Emoji/Noto Emoji)、Windows(Segoe UI Emoji)
+  - Agg 下黑白 emoji；检测到 mplcairo 时可彩色渲染（提示但不强制切换）
+  - 未找到 emoji 字体时仅告警，不影响中文设置
+- docs: README 增加“一行初始化/emoji 后备”使用说明；新增 `examples/emoji_demo.py`
+- chore: 版本号提升，保持向后兼容，默认行为不变

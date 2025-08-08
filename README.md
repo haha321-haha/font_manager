@@ -60,6 +60,23 @@ setup_chinese_font()
 
 **就这么简单！现在你的matplotlib图表可以完美显示中文了！** 🎉
 
+### 🎉 **NEW! Emoji 后备字体支持 (v1.1.0)**
+
+```python
+# 🆕 启用 emoji 后备字体，让图表中的 emoji 正常显示
+from font_manager import setup_matplotlib_chinese
+
+# 启用 emoji 后备字体（黑白，Agg后端稳定）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=False)
+
+# 或通过环境变量控制
+# export FM_EMOJI_FALLBACK=true
+# export FM_EMOJI_COLOR=false
+setup_matplotlib_chinese()
+```
+
+**现在你的图表可以同时显示中文和emoji了！** 📊🎯🚀
+
 ## ⚠️ **重要使用说明**
 
 ### 🎯 **作用范围**
@@ -74,14 +91,49 @@ setup_chinese_font()
   - 其他代码修改了 `plt.rcParams['font.family']` 等设置
   - 加载了某些会重置字体的样式或主题
 
-### 💡 **最佳实践**
+### 💡 **最佳实践：一行初始化**
+
+#### 🎯 **不同场景的放置位置**
+
 ```python
 # 推荐：在程序入口处调用一次
 from font_manager import setup_matplotlib_chinese
 setup_matplotlib_chinese()
 
-# 对于Jupyter Notebook，在第一个cell中调用
-# 对于长期运行的服务，在启动脚本中调用
+# 🆕 启用 emoji 支持（可选）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=False)
+```
+
+**按场景放置：**
+
+| 场景 | 放置位置 | 示例 |
+|------|----------|------|
+| **命令行脚本** | main脚本最顶部 | `if __name__ == "__main__":` 之前 |
+| **Jupyter/Notebook** | 第一个单元格 | 和常用import放一起 |
+| **Web服务** | 应用初始化处 | Flask的`create_app()`或FastAPI入口 |
+| **定时任务** | 任务脚本顶部 | Airflow DAG或cron脚本开头 |
+| **长期服务** | 启动脚本中 | 服务启动时调用一次 |
+
+#### 🌍 **环境变量控制（推荐CI/容器）**
+
+```bash
+# 环境变量方式（便于CI/Docker）
+export FM_EMOJI_FALLBACK=true
+export FM_EMOJI_COLOR=false  # Agg后端推荐黑白
+python your_script.py
+```
+
+#### 🎨 **Emoji 字体最佳实践**
+
+```python
+# 方案A：稳定黑白emoji（推荐生产环境）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=False)
+
+# 方案B：彩色emoji（需要mplcairo）
+# pip install mplcairo
+import matplotlib
+matplotlib.use('module://mplcairo.backends_agg')
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=True)
 ```
 
 ### 🔧 **WordCloud特殊处理**
@@ -247,6 +299,36 @@ fm.reset_config()
 # 获取配置信息
 config_info = fm.get_config_info()
 ```
+
+## 一行初始化（最佳实践）
+
+在项目入口最早位置调用一次，即可让当前进程内的所有 Matplotlib/Seaborn 图表正常显示中文：
+
+```python
+from font_manager import setup_matplotlib_chinese
+setup_matplotlib_chinese()  # 默认仅中文，进程级生效
+```
+
+- 适用位置：命令行脚本 main 顶部 / Jupyter 第一个 cell / Web 应用初始化（Flask create_app 之前、FastAPI 实例化之前）/ Airflow DAG 顶部 / 测试 conftest.py 顶部等。
+- 若后续样式重置了 rcParams（如 `plt.style.use(...)`），请在重置后再次调用一次。
+
+## Emoji 后备字体（可选）
+
+可选开启 emoji 后备字体，解决图表中文本中 emoji 变方框/缺字告警的问题：
+
+```python
+from font_manager import setup_matplotlib_chinese
+# 开启 emoji_fallback；优先彩色（若后端/字体支持）
+setup_matplotlib_chinese(emoji_fallback=True, emoji_prefer_color=True)
+```
+
+- 默认关闭，不影响现有用户；开启后会自动检测并追加 emoji 字体至 `rcParams['font.sans-serif']` 末尾。
+- Agg 后端下通常显示黑白 emoji；若检测到 `mplcairo` 且系统存在彩色 emoji 字体，可获得彩色渲染（库仅提示，不强制切换后端）。
+- 环境变量也可启用（方便 CI/容器）：
+  - `FM_EMOJI_FALLBACK=true|false|1|0|on|off|yes|no`
+  - `FM_EMOJI_COLOR=true|false|1|0|on|off|yes|no`
+
+示例脚本见 `examples/emoji_demo.py`，运行后在 `examples/_out/emoji_demo.png` 查看效果。
 
 ## ❓ **常见问题 FAQ**
 
@@ -447,5 +529,3 @@ python auto_test_github.py
 [💬 参与讨论](https://github.com/haha321-haha/font_manager/discussions)
 
 </div>
-</content>
-</file>
