@@ -69,6 +69,7 @@ __all__ = [
     
     # 便捷函数
     "setup_chinese_font",
+    "setup_matplotlib_chinese",
     "get_available_fonts",
     "validate_font_config"
 ]
@@ -106,3 +107,17 @@ def validate_font_config() -> ValidationReport:
     """
     manager = FontManager()
     return manager.validate()
+
+def setup_matplotlib_chinese(font_name: str = None, force_rebuild: bool = False) -> FontSetupResult:
+    """
+    便捷函数：设置matplotlib中文字体（兼容旧版API）
+    
+    Args:
+        font_name: 指定字体名称，None表示自动选择最佳字体
+        force_rebuild: 是否强制重建字体缓存
+        
+    Returns:
+        FontSetupResult: 字体设置结果
+    """
+    manager = FontManager()
+    return manager.setup_matplotlib_chinese(font_name=font_name, force_rebuild=force_rebuild)

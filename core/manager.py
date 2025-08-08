@@ -388,3 +388,39 @@ class FontManager(LoggerMixin):
             Dict[str, Any]: 样式摘要
         """
         return self.style_manager.get_style_summary()
+    
+    def setup_matplotlib_chinese(self, font_name: Optional[str] = None, force_rebuild: bool = False) -> FontSetupResult:
+        """
+        设置matplotlib中文字体（兼容旧版API）
+        
+        Args:
+            font_name: 指定字体名称，None表示自动选择最佳字体
+            force_rebuild: 是否强制重建字体缓存
+            
+        Returns:
+            FontSetupResult: 字体设置结果
+        """
+        if font_name:
+            # 使用指定字体
+            fonts = self.detector.detect_system_fonts(force_rescan=force_rebuild)
+            target_font = None
+            for font in fonts:
+                if font.name == font_name:
+                    target_font = font
+                    break
+            
+            if not target_font:
+                result = FontSetupResult(success=False, platform=self.platform)
+                result.add_error(f"未找到指定字体: {font_name}")
+                return result
+            
+            # 设置指定字体
+            self._current_font = target_font
+            self._apply_matplotlib_config(target_font)
+            
+            result = FontSetupResult(success=True, platform=self.platform)
+            result.font_used = target_font
+            return result
+        
+        # 使用自动选择
+        return self.setup(force_rebuild=force_rebuild)
