@@ -15,7 +15,7 @@
 *专为Python数据可视化设计的智能字体管理库*  
 *彻底解决matplotlib、seaborn等库的中文字体显示问题*
 
-![FontManager效果演示](https://github.com/haha321-haha/font_manager/raw/main/promotional_graphics_english/promotional_banner.png)
+![FontManager效果演示](https://raw.githubusercontent.com/haha321-haha/font_manager/main/promotional_banner.png)
 
 ### 📊 **项目统计**
 
