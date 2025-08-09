@@ -1,0 +1,86 @@
+{
+  "version": "1.1.0",
+  "font_config": {
+    "auto_detect": true,
+    "force_rebuild_cache": false,
+    "preferred_fonts": {
+      "macos": [
+        "Hiragino Sans GB",
+        "PingFang SC",
+        "STHeiti",
+        "Arial Unicode MS"
+      ],
+      "windows": [
+        "Microsoft YaHei",
+        "SimHei",
+        "SimSun",
+        "Arial Unicode MS"
+      ],
+      "linux": [
+        "Noto Sans CJK SC",
+        "WenQuanYi Zen Hei",
+        "Droid Sans Fallback",
+        "Arial Unicode MS"
+      ]
+    },
+    "fallback_fonts": [
+      "DejaVu Sans",
+      "Liberation Sans",
+      "Arial",
+      "Helvetica"
+    ],
+    "styles": {
+      "title": {
+        "font_size": 16,
+        "font_weight": 700,
+        "font_style": "normal",
+        "color": "black"
+      },
+      "axis_label": {
+        "font_size": 12,
+        "font_weight": 600,
+        "font_style": "normal",
+        "color": "black"
+      },
+      "tick_label": {
+        "font_size": 10,
+        "font_weight": 400,
+        "font_style": "normal",
+        "color": "black"
+      },
+      "legend": {
+        "font_size": 10,
+        "font_weight": 400,
+        "font_style": "normal",
+        "color": "black"
+      },
+      "annotation": {
+        "font_size": 9,
+        "font_weight": 400,
+        "font_style": "normal",
+        "color": "gray"
+      }
+    },
+    "emoji_fallback": false,
+    "emoji_prefer_color": true,
+    "emoji_fonts": []
+  },
+  "validation": {
+    "enable_chinese_test": true,
+    "enable_render_test": true,
+    "enable_performance_test": true,
+    "test_characters": "中文字体测试 Chinese Font Test 测试图表",
+    "performance_threshold": 1.0
+  },
+  "logging": {
+    "level": "INFO",
+    "enable_file_logging": false,
+    "log_file": null,
+    "enable_color": true
+  },
+  "cache": {
+    "enable_cache": true,
+    "cache_ttl": 3600,
+    "max_cache_size": 100
+  }
+}
