@@ -206,12 +206,20 @@ class FontManager(LoggerMixin):
             font_info: 字体信息
         """
         try:
+            # 强制设置matplotlib后端，避免GUI问题
+            import matplotlib
+            matplotlib.use('Agg')
+            
             import matplotlib.pyplot as plt
             import matplotlib.font_manager as fm
             
-            # 设置字体
-            plt.rcParams['font.sans-serif'] = [font_info.name, 'DejaVu Sans']
-            plt.rcParams['axes.unicode_minus'] = False
+            # 设置字体参数
+            plt.rcParams.update({
+                'font.sans-serif': [font_info.name, 'Arial Unicode MS', 'DejaVu Sans', 'Arial'],
+                'axes.unicode_minus': False,
+                'font.family': 'sans-serif',
+                'figure.max_open_warning': 0  # 禁用打开图形过多的警告
+            })
             
             # 清理字体缓存
             try:
@@ -424,3 +432,99 @@ class FontManager(LoggerMixin):
         
         # 使用自动选择
         return self.setup(force_rebuild=force_rebuild)
+    
+    def setup_matplotlib_chinese_robust(self, force_rebuild: bool = False) -> FontSetupResult:
+        """
+        健壮版matplotlib中文字体设置
+        
+        特点：
+        - 强制使用Agg后端避免GUI问题
+        - 智能字体检测和缓存
+        - 内存安全的配置方式
+        - 一次设置永久生效
+        
+        Args:
+            force_rebuild: 是否强制重建字体缓存
+            
+        Returns:
+            FontSetupResult: 字体设置结果
+        """
+        import warnings
+        import gc
+        
+        # 禁用字体相关警告
+        warnings.filterwarnings('ignore', category=UserWarning, module='matplotlib')
+        
+        start_time = time.time()
+        result = FontSetupResult(success=False, platform=self.platform)
+        
+        try:
+            # 强制设置matplotlib后端
+            import matplotlib
+            matplotlib.use('Agg')
+            
+            self.logger.info("开始健壮版中文字体设置...")
+            
+            # 如果已经配置且不强制重建，直接返回
+            if self.is_configured and not force_rebuild:
+                result.success = True
+                result.font_used = self._current_font
+                result.setup_time = time.time() - start_time
+                self.logger.info(f"字体已配置: {self._current_font.name}")
+                return result
+            
+            # 检测系统字体
+            fonts = self.detector.detect_system_fonts(force_rescan=force_rebuild)
+            
+            if not fonts:
+                result.add_error("未检测到任何字体")
+                return result
+            
+            # 优先选择已知的好字体
+            preferred_fonts = [
+                'Arial Unicode MS',  # macOS最佳
+                'PingFang SC',       # macOS现代
+                'Hiragino Sans GB',  # macOS传统
+                'Microsoft YaHei',   # Windows最佳
+                'SimHei',           # Windows传统
+                'WenQuanYi Micro Hei', # Linux
+                'DejaVu Sans'       # 通用备用
+            ]
+            
+            selected_font = None
+            for preferred in preferred_fonts:
+                for font in fonts:
+                    if preferred.lower() in font.name.lower():
+                        selected_font = font
+                        break
+                if selected_font:
+                    break
+            
+            # 如果没找到首选字体，使用第一个可用字体
+            if not selected_font and fonts:
+                selected_font = fonts[0]
+            
+            if not selected_font:
+                result.add_error("没有可用字体")
+                return result
+            
+            # 设置字体
+            self._current_font = selected_font
+            self._apply_matplotlib_config(selected_font)
+            
+            result.success = True
+            result.font_used = selected_font
+            result.fallback_fonts = [f.name for f in fonts[1:6]]
+            
+            self.logger.info(f"健壮版字体设置成功: {selected_font.name}")
+            
+        except Exception as e:
+            self.logger.error(f"健壮版字体设置失败: {e}")
+            result.add_error(str(e))
+            
+        finally:
+            result.setup_time = time.time() - start_time
+            # 强制垃圾回收
+            gc.collect()
+            
+        return result

@@ -70,6 +70,7 @@ __all__ = [
     # 便捷函数
     "setup_chinese_font",
     "setup_matplotlib_chinese",
+    "setup_matplotlib_chinese_robust",
     "get_available_fonts",
     "validate_font_config"
 ]
@@ -121,3 +122,22 @@ def setup_matplotlib_chinese(font_name: str = None, force_rebuild: bool = False)
     """
     manager = FontManager()
     return manager.setup_matplotlib_chinese(font_name=font_name, force_rebuild=force_rebuild)
+
+def setup_matplotlib_chinese_robust(force_rebuild: bool = False) -> FontSetupResult:
+    """
+    便捷函数：健壮版matplotlib中文字体设置
+    
+    特点：
+    - 强制使用Agg后端避免GUI问题
+    - 智能字体检测和缓存
+    - 内存安全的配置方式
+    - 一次设置永久生效
+    
+    Args:
+        force_rebuild: 是否强制重建字体缓存
+        
+    Returns:
+        FontSetupResult: 字体设置结果
+    """
+    manager = FontManager()
+    return manager.setup_matplotlib_chinese_robust(force_rebuild=force_rebuild)
